@@ -19,10 +19,13 @@ public class PlayerControl : MonoBehaviour
 
     bool jump = false;
 
+    Animator myAnim;
+
     // Start is called before the first frame update
     void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
+        myAnim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -33,6 +36,15 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetButtonDown("Jump") && grounded)
         {
             jump = true;
+        }
+
+        if(horizontalMove > 0.2f || horizontalMove < -0.2f)
+        {
+            myAnim.SetBool("walking", true);
+        }
+        else
+        {
+            myAnim.SetBool("walking", false);
         }
     }
 
