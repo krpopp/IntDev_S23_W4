@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 1328467501}
   - component: {fileID: 1328467500}
   - component: {fileID: 1328467504}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -354,6 +354,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  castDist: 0.5
+  gravityScale: 1
+  gravityFall: 5
+  jumpLimit: 5
 --- !u!1 &1691919885
 GameObject:
   m_ObjectHideFlags: 0
