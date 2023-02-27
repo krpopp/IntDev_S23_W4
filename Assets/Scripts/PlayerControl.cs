@@ -26,6 +26,8 @@ public class PlayerControl : MonoBehaviour
 
     Vector3 startPos;
 
+    public GameManager myManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -101,6 +103,12 @@ public class PlayerControl : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other){
         if(other.name == "Goal"){
             winText.SetActive(true);
+        }
+        if (other.tag == "Star")
+        {
+            GameObject hitStar = other.gameObject;
+            myManager.starObjects.Remove(hitStar);
+            Destroy(other.gameObject);
         }
     }
 }
