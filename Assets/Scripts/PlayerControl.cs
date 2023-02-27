@@ -20,12 +20,20 @@ public class PlayerControl : MonoBehaviour
     bool jump = false;
 
     Animator myAnim;
+    SpriteRenderer myRend;
+
+    public GameObject winText;
+
+    Vector3 startPos;
 
     // Start is called before the first frame update
     void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
+        myRend = GetComponent<SpriteRenderer>();
+
+        startPos = transform.position;
     }
 
     // Update is called once per frame
@@ -33,18 +41,26 @@ public class PlayerControl : MonoBehaviour
     {
         horizontalMove = Input.GetAxis("Horizontal");
 
-        if (Input.GetButtonDown("Jump") && grounded)
-        {
+        if(Input.GetButtonDown("Jump") && grounded){
+            myAnim.SetBool("jumping", true);
             jump = true;
         }
-
-        if(horizontalMove > 0.2f || horizontalMove < -0.2f)
-        {
+        if(horizontalMove > 0.2f){
             myAnim.SetBool("walking", true);
-        }
-        else
-        {
+            myRend.flipX = false;
+        } else if(horizontalMove < -0.2){
+            myAnim.SetBool("walking", true);
+            myRend.flipX = true;
+        } else{
             myAnim.SetBool("walking", false);
+        }
+
+        if(transform.position.y < -5f){
+            transform.position = startPos;
+        }
+
+        if (Input.GetButtonDown("Fire1")){
+            myAnim.SetTrigger("attacking");
         }
     }
 
@@ -72,6 +88,7 @@ public class PlayerControl : MonoBehaviour
         if(hit.collider != null && hit.transform.name == "Ground")
         {
             grounded = true;
+            myAnim.SetBool("jumping", false);
         }
         else
         {
@@ -79,5 +96,11 @@ public class PlayerControl : MonoBehaviour
         }
 
         myBody.velocity = new Vector3(moveSpeed, myBody.velocity.y, 0);
+    }
+
+    void OnTriggerEnter2D(Collider2D other){
+        if(other.name == "Goal"){
+            winText.SetActive(true);
+        }
     }
 }
