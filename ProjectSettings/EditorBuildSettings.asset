@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: a31cbda6f432c44f293b3df4d0c451ba
+  - enabled: 1
+    path: Assets/Scenes/Juice_Main.unity
+    guid: 9edca650cdb584eec8a79079c0cf6e33
+  - enabled: 1
+    path: Assets/Scenes/Juice_Game.unity
+    guid: 1f34e4fa731cf4ad4a9a459d572c3f5b
   m_configObjects: {}

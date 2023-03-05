@@ -6,35 +6,56 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    public GameObject starPrefab;
-    public int starNum = 5;
-    public int minX, maxX, minY, maxY;
+    enum State {Main, Game, End}
 
-    public List<GameObject> starObjects;
+    State currentState = State.Main;
+
+    private static GameManager instance;
+    public static GameManager FindInstance()
+    {
+        return instance;
+    }
+
+    void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else if (instance == null)
+        {
+            DontDestroyOnLoad(this);
+            instance = this;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < starNum; i++)
-        {
-            Vector3 starPos = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), 0);
-            GameObject newStar = Instantiate(starPrefab, starPos, Quaternion.identity);
-            starObjects.Add(newStar);
-        }
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    SceneManager.LoadScene(0);
-        //}
+        
     }
 
-    public void LoadGame()
+    public void LoadGame(string nextScene)
     {
-        SceneManager.LoadScene(0);
+        SwitchStates();
+        SceneManager.LoadScene(nextScene);
+    }
+
+    void SwitchStates() {
+        switch (currentState) {
+            case State.Main:
+                currentState = State.Game;
+                break;
+            case State.Game:
+                currentState = State.End;
+                break;
+        }
     }
 
 }

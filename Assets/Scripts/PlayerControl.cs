@@ -15,27 +15,20 @@ public class PlayerControl : MonoBehaviour
     public float castDist = 0.2f;
     public float gravityScale = 5f;
     public float gravityFall = 40f;
-    public float jumpLimit = 2f;
+    public float jumpPower = 2f;
 
     bool jump = false;
 
-    Animator myAnim;
-    SpriteRenderer myRend;
-
-    public GameObject winText;
-
     Vector3 startPos;
 
-    public GameManager myManager;
+    GameManager myManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        myBody = GetComponent<Rigidbody2D>();
-        myAnim = GetComponent<Animator>();
-        myRend = GetComponent<SpriteRenderer>();
-
         startPos = transform.position;
+        myBody = GetComponent<Rigidbody2D>();
+        myManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -44,26 +37,15 @@ public class PlayerControl : MonoBehaviour
         horizontalMove = Input.GetAxis("Horizontal");
 
         if(Input.GetButtonDown("Jump") && grounded){
-            myAnim.SetBool("jumping", true);
             jump = true;
         }
         if(horizontalMove > 0.2f){
-            myAnim.SetBool("walking", true);
-            myRend.flipX = false;
-        } else if(horizontalMove < -0.2){
-            myAnim.SetBool("walking", true);
-            myRend.flipX = true;
-        } else{
-            myAnim.SetBool("walking", false);
         }
 
         if(transform.position.y < -5f){
             transform.position = startPos;
         }
 
-        if (Input.GetButtonDown("Fire1")){
-            myAnim.SetTrigger("attacking");
-        }
     }
 
     void FixedUpdate()
@@ -72,7 +54,7 @@ public class PlayerControl : MonoBehaviour
 
         if (jump)
         {
-            myBody.AddForce(Vector2.up * jumpLimit, ForceMode2D.Impulse);
+            myBody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             jump = false;
         }
 
@@ -90,7 +72,6 @@ public class PlayerControl : MonoBehaviour
         if(hit.collider != null && hit.transform.name == "Ground")
         {
             grounded = true;
-            myAnim.SetBool("jumping", false);
         }
         else
         {
@@ -101,14 +82,6 @@ public class PlayerControl : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other){
-        if(other.name == "Goal"){
-            winText.SetActive(true);
-        }
-        if (other.tag == "Star")
-        {
-            GameObject hitStar = other.gameObject;
-            myManager.starObjects.Remove(hitStar);
-            Destroy(other.gameObject);
-        }
+
     }
 }
